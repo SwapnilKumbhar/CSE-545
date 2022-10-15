@@ -5,4 +5,4 @@ all:
 	$(CC) $(CFLAGS) decipher.cpp -o decipher
 
 clean:
-	rm decipher generated_keys.txt
+	rm decipher
