@@ -1,0 +1,8 @@
+# GDB files
+.gdb_history
+
+# Binaries
+encrypt
+decrypt
+vigenere-dec
+vigenere-enc
