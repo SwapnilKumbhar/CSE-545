@@ -6,3 +6,5 @@ encrypt
 decrypt
 vigenere-dec
 vigenere-enc
+decipher
+generated_keys.txt
