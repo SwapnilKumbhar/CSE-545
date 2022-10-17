@@ -1,5 +1,5 @@
 CC=clang++
-CFLAGS=-std=c++17 -ggdb
+CFLAGS=-std=c++17
 
 all: 
 	$(CC) vigenere-enc.cpp $(CFLAGS) -o vigenere-enc
