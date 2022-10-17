@@ -6,4 +6,4 @@ all:
 	$(CC) vigenere-dec.cpp $(CFLAGS) -o vigenere-dec
 
 clean:
-	rm -f vigenere-enc
+	rm vigenere-enc vigenere-dec
