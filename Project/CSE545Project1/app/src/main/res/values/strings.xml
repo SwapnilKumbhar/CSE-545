@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">CSE 545 Project 1</string>
+    <string name="group_43">Group 43</string>
+    <string name="member_pooja">Pooja Kulkarni - pkulka19@asu.edu</string>
+    <string name="member_swapnil">Swapnil Kumbhar - skumbha1@asu.edu</string>
+    <string name="broadcast_activity">Broadcast</string>
+    <string name="service_activity">Service</string>
+    <string name="content_provider_activity">Content Provider</string>
 </resources>

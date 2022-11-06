@@ -6,13 +6,65 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_gravity="center"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/group_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/group_43"
+            android:layout_centerHorizontal="true"
+            android:textSize="25sp" />
+        <TextView
+            android:layout_below="@+id/group_number"
+            android:id="@+id/group_member_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/member_pooja"
+            android:layout_centerHorizontal="true"
+            android:textSize="18sp" />
+        <TextView
+            android:layout_below="@+id/group_member_1"
+            android:id="@+id/group_member_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/member_swapnil"
+            android:layout_centerHorizontal="true"
+            android:textSize="18sp" />
+
+        <Button
+            android:layout_below="@+id/group_member_2"
+            android:layout_marginTop="20dp"
+            android:text="@string/broadcast_activity"
+            android:id="@+id/broadcast_button"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:layout_below="@+id/broadcast_button"
+            android:layout_marginTop="10dp"
+            android:text="@string/service_activity"
+            android:id="@+id/service_button"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:layout_below="@+id/service_button"
+            android:layout_marginTop="10dp"
+            android:text="@string/content_provider_activity"
+            android:id="@+id/content_provider_button"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
