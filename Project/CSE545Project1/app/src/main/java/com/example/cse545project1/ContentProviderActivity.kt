@@ -80,15 +80,21 @@ class ContentProviderActivity : AppCompatActivity() {
             val contactName = contactNameView.text.toString()
             val phoneNumber = phoneNumberView.text.toString()
 
-            val uri: Uri? = dbHandler.addContact(Contact(contactName, phoneNumber))
+            if("" == contactName.trim() || "" == phoneNumber.trim()) {
+                val snack = Snackbar.make(it,"Please enter all details before saving a new contact",Snackbar.LENGTH_SHORT)
+                snack.show()
+            } else {
 
-            val id: Int = uri!!.lastPathSegment!!.toInt()
-            addContactRow(Contact(id, contactName, phoneNumber))
+                val uri: Uri? = dbHandler.addContact(Contact(contactName, phoneNumber))
 
-            contactNameView.text.clear()
-            phoneNumberView.text.clear()
-            contactNameView.clearFocus()
-            phoneNumberView.clearFocus()
+                val id: Int = uri!!.lastPathSegment!!.toInt()
+                addContactRow(Contact(id, contactName, phoneNumber))
+
+                contactNameView.text.clear()
+                phoneNumberView.text.clear()
+                contactNameView.clearFocus()
+                phoneNumberView.clearFocus()
+            }
         }
     }
 
