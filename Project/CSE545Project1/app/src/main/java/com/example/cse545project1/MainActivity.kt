@@ -24,4 +24,8 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this, ServiceActivity::class.java))
     }
 
+    fun onBroadcastClick(v: View) {
+        startActivity(Intent(this, BroadcastActivity::class.java))
+    }
+
 }
