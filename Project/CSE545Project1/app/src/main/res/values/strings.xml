@@ -6,4 +6,12 @@
     <string name="broadcast_activity">Broadcast</string>
     <string name="service_activity">Service</string>
     <string name="content_provider_activity">Content Provider</string>
+    <string name="insert_contact">Save New Contact</string>
+    <string name="clear_contacts">Clear Contacts</string>
+    <string name="all_contacts">All Contacts</string>
+    <string name="id">ID</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="contact_name_hint">Contact Name</string>
+    <string name="phone_number_hint">Phone number</string>
 </resources>
