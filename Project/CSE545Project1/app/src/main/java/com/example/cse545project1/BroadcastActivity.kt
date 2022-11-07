@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import com.example.cse545project1.services.BrdReceiver
+import com.example.cse545project1.helpers.BrdReceiver
 
 class BroadcastActivity : AppCompatActivity() {
     private val _intentAction = "com.example.CSE545"

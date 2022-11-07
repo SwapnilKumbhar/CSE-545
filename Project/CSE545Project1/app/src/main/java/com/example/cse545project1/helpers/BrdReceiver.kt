@@ -1,4 +1,4 @@
-package com.example.cse545project1.services
+package com.example.cse545project1.helpers
 
 import android.content.BroadcastReceiver
 import android.content.Context
