@@ -16,6 +16,9 @@ class ServiceActivity : AppCompatActivity() {
     private lateinit var _tsService: TimeService
     private var _isBound: Boolean = false
 
+    //
+    private val _serviceStoppedLabel = "Service Not Running"
+
     // Logging
     private val _logLabel = "ServiceActivity"
 
@@ -33,13 +36,36 @@ class ServiceActivity : AppCompatActivity() {
     }
 
     // Callbacks
-    fun onClick(v: View) {
+    fun updateCurrentTime(v: View) {
+        val textView = findViewById<TextView>(R.id.tv_time)
+
         if (_isBound) {
             // View the time on the TextView
             val date = _tsService.getCurrentTimeAsString()
-            val textView = findViewById<TextView>(R.id.tv_time)
             textView.text = date
             Log.v(_logLabel, date)
+        }
+        else {
+            // Let user know that the service is not running
+            textView.text = _serviceStoppedLabel
+        }
+    }
+
+    fun startService(v: View) {
+        // Bind to Time service
+        if (!_isBound) {
+            Log.v(_logLabel, "Binding service")
+            Intent(this, TimeService::class.java).also {
+                    intent-> bindService(intent, _connection, Context.BIND_AUTO_CREATE)
+            }
+        }
+    }
+
+    fun stopService(v: View) {
+        // Unbind service if running
+        if (_isBound) {
+            unbindService(_connection)
+            _isBound = false
         }
     }
 
@@ -49,18 +75,10 @@ class ServiceActivity : AppCompatActivity() {
         setContentView(R.layout.activity_service)
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        // Bind to Time service
-        Log.v(_logLabel, "Binding service")
-        Intent(this, TimeService::class.java).also {
-            intent-> bindService(intent, _connection, Context.BIND_AUTO_CREATE)
-        }
-    }
-
     override fun onStop() {
         super.onStop()
-        unbindService(_connection)
+        // Housekeeping
+        if (_isBound)
+            unbindService(_connection)
     }
 }
