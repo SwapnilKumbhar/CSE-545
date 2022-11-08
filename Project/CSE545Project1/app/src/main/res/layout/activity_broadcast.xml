@@ -43,6 +43,7 @@
             />
 
         <Button
+            android:id="@+id/brd_send_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/broadcast_breaker"
@@ -50,6 +51,15 @@
             android:layout_marginTop="40dp"
             android:text="Send Broadcast"
             android:onClick="sendBroadcast"
+            />
+
+        <TextView
+            android:id="@+id/brd_sent_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/brd_send_btn"
+            android:layout_marginTop="40dp"
+            android:layout_centerHorizontal="true"
             />
 
     </RelativeLayout>

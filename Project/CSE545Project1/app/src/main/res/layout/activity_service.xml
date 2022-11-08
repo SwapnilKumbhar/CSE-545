@@ -68,7 +68,6 @@
                 android:text="@string/svc_start_btn"
                 />
 
-
         </LinearLayout>
 
     </RelativeLayout>
