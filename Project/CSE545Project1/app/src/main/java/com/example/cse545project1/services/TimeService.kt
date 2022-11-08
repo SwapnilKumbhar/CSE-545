@@ -9,7 +9,6 @@ import java.util.Date
 
 class TimeService : Service() {
     private val _binder: IBinder = TSBinder()
-    private val _date = Date()
     private val _dateFormatter = SimpleDateFormat("HH:mm")
 
     inner class TSBinder : Binder() {
@@ -17,13 +16,8 @@ class TimeService : Service() {
         fun getTimeService(): TimeService = this@TimeService
     }
 
-    // API starts here
-    fun getCurrentTime(): Date {
-        return _date
-    }
-
     fun getCurrentTimeAsString(): String {
-        return _dateFormatter.format(_date)
+        return _dateFormatter.format(Date())
     }
 
     // Overrides

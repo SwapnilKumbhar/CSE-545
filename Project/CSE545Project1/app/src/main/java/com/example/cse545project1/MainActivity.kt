@@ -1,21 +1,15 @@
 package com.example.cse545project1
 
-import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.IBinder
-import android.widget.Button
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
-import com.example.cse545project1.services.TimeService
+import androidx.appcompat.app.AppCompatActivity
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    private val _date = Date()
     private val _dateFormatter = SimpleDateFormat("HH:mm")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         // Update text view with current time
         val currTimeTv = findViewById<TextView>(R.id.main_curr_time)
-        currTimeTv.text = _dateFormatter.format(_date)
+        currTimeTv.text = _dateFormatter.format(Date())
     }
 
     // Callbacks
