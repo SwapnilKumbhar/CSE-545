@@ -18,5 +18,6 @@
     <!-- Service Activity Strings   -->
     <string name="svc_get_time_btn">Get Current Time</string>
     <string name="svc_time_tb">Current Time</string>
->>>>>>> 8e567aa (feat(services): Added service, activity and intent in main)
+    <string name="svc_stop_btn">Stop Service</string>
+    <string name="svc_start_btn">Start Service</string>
 </resources>

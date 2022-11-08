@@ -33,10 +33,43 @@
             android:layout_below="@id/tv_time"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="24dp"
-            android:onClick="onClick"
+            android:onClick="updateCurrentTime"
             android:text="@string/svc_get_time_btn"
             tools:layout_editor_absoluteX="110dp"
             tools:layout_editor_absoluteY="298dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/btn_curr_time"
+            >
+            <Button
+                android:id="@+id/svc_stop_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_curr_time"
+                android:onClick="stopService"
+                android:layout_marginTop="40dp"
+                android:layout_centerHorizontal="true"
+                android:text="@string/svc_stop_btn"
+                />
+
+            <Button
+                android:id="@+id/svc_start_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_curr_time"
+                android:layout_toRightOf="@id/svc_stop_btn"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="40dp"
+                android:onClick="startService"
+                android:layout_centerHorizontal="true"
+                android:text="@string/svc_start_btn"
+                />
+
+
+        </LinearLayout>
 
     </RelativeLayout>
 
