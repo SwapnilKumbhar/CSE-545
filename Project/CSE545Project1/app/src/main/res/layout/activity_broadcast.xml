@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BroadcastActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+
+        >
+
+        <TextView
+            android:id="@+id/broadcast_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Received broadcast: "
+            android:textSize="16dp"
+            />
+
+        <TextView
+            android:id="@+id/broadcast_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/broadcast_title"
+            android:layout_marginTop="40dp"
+            android:hint="None"
+            android:layout_centerHorizontal="true"
+            />
+
+<!--        Just a line breaker -->
+        <View
+            android:id="@+id/broadcast_breaker"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@id/broadcast_msg"
+            android:layout_marginTop="40dp"
+            android:background="#AAAAAA"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/broadcast_breaker"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:text="Send Broadcast"
+            android:onClick="sendBroadcast"
+            />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
