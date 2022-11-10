@@ -34,11 +34,10 @@ class ContactsProvider : ContentProvider() {
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
         val uriType = sUriMatcher.match(uri)
         val sqlDB = dbHandler!!.writableDatabase
-        val rowsDeleted: Int
 
-        when (uriType) {
-            allContacts -> rowsDeleted = sqlDB.delete(DBHandler.TABLE_CONTACTS,"1", null)
-            singleContact -> throw IllegalArgumentException("Can't delete an individual contact")
+        val rowsDeleted: Int = when (uriType) {
+            allContacts -> sqlDB.delete(DBHandler.TABLE_CONTACTS,selection, null)
+            singleContact -> sqlDB.delete(DBHandler.TABLE_CONTACTS, selection, null)
             else -> throw IllegalArgumentException("Unknown URI: $uri")
         }
         context!!.contentResolver.notifyChange(uri, null)

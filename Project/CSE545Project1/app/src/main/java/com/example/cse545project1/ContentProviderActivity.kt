@@ -59,10 +59,25 @@ class ContentProviderActivity : AppCompatActivity() {
         phoneTextView.textSize = 16.0F
         phoneTextView.text = String.format(contact.phone.toString())
 
+        val deleteButtonView = Button(this)
+        deleteButtonView.layoutParams = layoutParams
+        deleteButtonView.textSize = 10.0F
+        deleteButtonView.text = String.format("delete")
+        deleteButtonView.setOnClickListener {
+            val dbHandler = DBHandler(this, null, null, 1)
+            val rowsDeleted: Int = dbHandler.deleteContact(contact)
+            val snack = Snackbar.make(it,"Deleted $rowsDeleted contact with name ${contact.name}",Snackbar.LENGTH_LONG)
+            snack.show()
+            val contactRow: View = findViewById(1000 + contact.id)
+            if (contactRow is TableRow) (contactRow as ViewGroup).removeAllViews()
+        }
+
         val tableRow = TableRow(this)
+        tableRow.id = 1000 + contact.id
         tableRow.addView(idTextView)
         tableRow.addView(nameTextView)
         tableRow.addView(phoneTextView)
+        tableRow.addView(deleteButtonView)
 
         tl.addView(tableRow)
     }

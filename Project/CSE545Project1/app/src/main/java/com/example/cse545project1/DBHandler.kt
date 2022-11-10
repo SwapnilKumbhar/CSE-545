@@ -22,7 +22,7 @@ class DBHandler(
 
         private const val DATABASE_VERSION = 1
         private const val DATABASE_NAME = "contactDB.db"
-        const val TABLE_CONTACTS = "products"
+        const val TABLE_CONTACTS = "contacts"
         const val TABLE_SQLITE_SEQUENCE = "sqlite_sequence"
 
         const val COLUMN_ID = "_id"
@@ -77,6 +77,15 @@ class DBHandler(
 
         cursor.close()
         return allContacts
+    }
+
+    fun deleteContact(contact: Contact): Int {
+        val selection = "_id = \"${contact.id}\""
+
+        return contentResolver!!.delete(
+            ContactsProvider.CONTENT_URI,
+            selection, null
+        )
     }
 
     fun deleteAllContacts(): Int {
