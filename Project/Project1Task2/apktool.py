@@ -8,22 +8,22 @@ TMP_APK_DIR = "apk_dec"
 PERM_KEY = "{http://schemas.android.com/apk/res/android}name"
 
 # Runs APK tool
-def _run_apktool(app_path: str) -> bool:
-    args = ["apktool", "d", app_path, "--output", TMP_APK_DIR]
+def _run_apktool(app_path: str, thread_num: int) -> bool:
+    args = ["apktool", "d", app_path, "--output", f"{TMP_APK_DIR}_{thread_num}"]
     p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     p.wait()
     return True if p.returncode == 0 else False
 
 
 # Cleans up any files created by apktool
-def _cleanup():
-    if os.path.isdir(TMP_APK_DIR):
-        rmtree(TMP_APK_DIR)
+def _cleanup(thread_num: int):
+    if os.path.isdir(f"{TMP_APK_DIR}_{thread_num}"):
+        rmtree(f"{TMP_APK_DIR}_{thread_num}")
 
 
 # Extract from XML
-def _extract_permissions():
-    manifest_path = os.path.join(TMP_APK_DIR, "AndroidManifest.xml")
+def _extract_permissions(thread_num: int):
+    manifest_path = os.path.join(f"{TMP_APK_DIR}_{thread_num}", "AndroidManifest.xml")
     if not os.path.exists(manifest_path):
         err("Could not locate the `AndroidManifest.xml` file")
         return []
@@ -44,22 +44,22 @@ _is_apktool_present = lambda: which("apktool") is not None
 
 
 # Main method
-def get_app_permissions(app_path: str) -> list:
+def get_app_permissions(app_path: str, thread_num) -> list:
     # Cleanup once before we start
-    _cleanup()
-    dbg(f"Extracting permissions for {app_path}")
+    _cleanup(thread_num)
+    dbg(f"Extracting permissions for {app_path} on thread {thread_num}")
     if not _is_apktool_present:
         err(f"Could not find `apktool` in PATH")
         return []
-    if not _run_apktool(app_path):
+    if not _run_apktool(app_path, thread_num):
         err(f"`apktool` encountered an error!")
         return []
 
     # Extract permissions
-    permList = _extract_permissions()
+    permList = _extract_permissions(thread_num)
 
     # Cleanup after
-    _cleanup()
+    _cleanup(thread_num)
 
     # Return
     dbg("Done!")
