@@ -1,8 +1,11 @@
+#!/usr/bin/python3
+
 import apktool
 import os
 import threading
 import top_apps_most_perms
 import chart
+import top_permissions
 
 APKS_PATH = "selectedAPKs/"
 ALL_PERMS = []
@@ -47,3 +50,4 @@ if __name__ == "__main__":
     
     # Question 3
     chart.create_line_chart(ALL_PERMS)
+    top_permissions.get_most_freq_perms(ALL_PERMS)
