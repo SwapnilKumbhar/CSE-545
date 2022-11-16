@@ -1,8 +1,11 @@
+#!/usr/bin/python3
+
 import apktool
 import os
 import threading
 import top_apps_most_perms
 import chart
+import top_permissions
 
 APKS_PATH = "selectedAPKs/"
 ALL_PERMS = []
@@ -40,7 +43,7 @@ if __name__ == "__main__":
             threads[j].join()
 
     # Question 1
-    # TODO by Swapnil
+    top_permissions.get_most_freq_perms(ALL_PERMS)
 
     # Question 2
     top_apps_most_perms.get_top_10_apps(all_apks, ALL_PERMS)
