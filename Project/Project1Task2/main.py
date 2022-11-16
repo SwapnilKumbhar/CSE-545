@@ -1,9 +1,8 @@
-#!/usr/bin/python3
-
 import apktool
 import os
 import threading
 import top_apps_most_perms
+import chart
 
 APKS_PATH = "selectedAPKs/"
 ALL_PERMS = []
@@ -40,4 +39,11 @@ if __name__ == "__main__":
         for j in range(0, len(threads)):
             threads[j].join()
 
+    # Question 1
+    # TODO by Swapnil
+
+    # Question 2
     top_apps_most_perms.get_top_10_apps(all_apks, ALL_PERMS)
+    
+    # Question 3
+    chart.create_line_chart(ALL_PERMS)
