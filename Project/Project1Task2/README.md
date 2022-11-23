@@ -21,7 +21,7 @@ Before running the code, **ensure that the `selectedAPKs` folder is in the same 
 To run the code, with the virtual environment activated, run --
 
 ```sh
-./main.py
+python3 main.py
 ```
 
 You'll see the results printed on the terminal for the first two problems. The line chart for the last problem will be saved in the same folder under the name `line_chart.png`.
