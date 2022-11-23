@@ -1,4 +1,4 @@
-from feature_extraction import extract_features
+from feature_extraction import *
 from feature_extraction.core import *
 import argparse
 import logging
@@ -8,10 +8,14 @@ import asyncio
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-b", "--benign", type=str, help="Path to benign apps directory"
+        "-b", "--benign", type=str, help="Path to benign apps directory", required=True
     )
     parser.add_argument(
-        "-m", "--malicious", type=str, help="Path to malicious apps directory"
+        "-m",
+        "--malicious",
+        type=str,
+        help="Path to malicious apps directory",
+        required=True,
     )
 
     args = parser.parse_args()
@@ -24,3 +28,5 @@ if __name__ == "__main__":
     mal_app_data, ben_app_data = asyncio.run(
         extract_features(args.malicious, args.benign)
     )
+
+    get_feature_matrix(mal_app_data, ben_app_data)

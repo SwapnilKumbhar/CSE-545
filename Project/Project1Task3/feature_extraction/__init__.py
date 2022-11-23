@@ -5,6 +5,8 @@ from asyncio import gather
 from logging import getLogger
 from time import time
 
+from feature_extraction.features import *
+
 logger = getLogger("FE")
 
 
@@ -40,3 +42,18 @@ async def extract_features(
     logger.info(f"Gathered! Took {end_time - start_time} seconds")
 
     return mal_apps_data, ben_apps_data
+
+
+def get_feature_matrix(mal_apps: list[RawApkData], ben_apps: list[RawApkData]):
+    mal_matrix = []
+    for mal_app in mal_apps:
+        feat_vector = []
+
+        ### Start calls to all feature extractors
+        num_of_perms.get_features(mal_app.manifest, feat_vector)
+        ### Ended calls to all feature extractors
+
+        mal_matrix.append(feat_vector)
+
+    # Remove this
+    print(mal_matrix)
