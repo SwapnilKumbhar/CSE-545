@@ -20,7 +20,7 @@ class RawApkData:
     manifest: _Element
 
 
-async def get_raw_elements(file_path: str) -> RawApkData | None:
+async def get_raw_elements(file_path: str):
     """
     Extracts manifest and other important data from APK files and stores them
     in a RawApkData structure. Returns data or None if something goes wrong
