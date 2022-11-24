@@ -46,7 +46,7 @@ async def extract_features(
 
 def get_feature_matrix(mal_apps: list[RawApkData], ben_apps: list[RawApkData]):
     mal_matrix = []
-    for mal_app in mal_apps:
+    for mal_app in ben_apps:
         feat_vector = []
 
         ### Start calls to all feature extractors
@@ -57,7 +57,8 @@ def get_feature_matrix(mal_apps: list[RawApkData], ben_apps: list[RawApkData]):
         num_of_read_perms.get_features(mal_app.manifest, feat_vector)
         has_coarse_location.get_features(mal_app.manifest, feat_vector)
         uses_camera.get_features(mal_app.manifest, feat_vector)
-
+        num_of_write_perms.get_features(mal_app.manifest, feat_vector)
+        num_of_access_perms.get_features(mal_app.manifest, feat_vector)
         ### Ended calls to all feature extractors
 
         mal_matrix.append(feat_vector)
