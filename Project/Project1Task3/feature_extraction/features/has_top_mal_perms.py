@@ -1,6 +1,7 @@
 from lxml.etree import _Element
 
 
+# TODO: Some apps have the same permission multiple times, figure out what to do for the
 def get_features(manifest: _Element, feat_vector):
     if manifest is None:
         feat_vector.append(-1)
@@ -22,10 +23,13 @@ def get_features(manifest: _Element, feat_vector):
         "android.permission.RECEIVE_SMS",
     ]
 
+    collected_perms = []
     count = 0
     for perm in permissions:
         if perm_name in perm.attrib:
             if perm.attrib[perm_name] in mal_perms:
-                count += 1
+                if perm.attrib[perm_name] not in collected_perms:
+                    count += 1
+                    collected_perms.append(perm.attrib[perm_name])
 
     feat_vector.append(count)
