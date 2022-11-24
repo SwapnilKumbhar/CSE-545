@@ -56,6 +56,8 @@ def get_feature_matrix(mal_apps: list[RawApkData], ben_apps: list[RawApkData]):
         has_fine_location.get_features(mal_app.manifest, feat_vector)
         num_of_read_perms.get_features(mal_app.manifest, feat_vector)
         has_coarse_location.get_features(mal_app.manifest, feat_vector)
+        uses_camera.get_features(mal_app.manifest, feat_vector)
+
         ### Ended calls to all feature extractors
 
         mal_matrix.append(feat_vector)
