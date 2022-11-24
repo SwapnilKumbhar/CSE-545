@@ -41,7 +41,9 @@ async def get_raw_elements(file_path: str):
         with ZipFile(file_path) as zf:
             # Check if manifest exists in the file list
             if "AndroidManifest.xml" not in zf.namelist():
-                return None
+                # Return with manifest_xml as None
+                logger.warn(f"Could not find AndroidManifest.xml for: {file_path}")
+                return RawApkData(path.basename(file_path), None)
 
             manifest_binary = zf.read("AndroidManifest.xml")
 
