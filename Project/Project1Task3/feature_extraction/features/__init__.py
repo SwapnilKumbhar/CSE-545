@@ -1,1 +1,2 @@
 import feature_extraction.features.num_of_perms
+import feature_extraction.features.has_fine_location
