@@ -1,3 +1,9 @@
+"""
+Utility for outputting top 10 permissions in a set of android applications.
+
+Usage: python3 get_top_perms -m path/to/maliciousapps/folder
+"""
+
 import argparse
 from feature_extraction import *
 import asyncio
