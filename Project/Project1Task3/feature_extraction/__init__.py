@@ -1,5 +1,6 @@
 from glob import glob
-from os import path
+from os import path, mkdir
+from shutil import rmtree
 from .core import *
 from asyncio import gather
 from logging import getLogger
@@ -22,6 +23,12 @@ async def extract_features(
     logger.info(f"Benign apps path:    {ben_apps_path}")
 
     start_time = time()
+
+    # Create a temporary directory to keep extracted source code
+    # This will only happen on the first run for feature extractions
+    if not path.exists("extracted_code"):
+        mkdir("extracted_code")
+
     # Extract raw data
     future_list = []
     for app_path in glob(path.join(mal_apps_path, "*.apk")):
@@ -47,7 +54,7 @@ async def extract_features(
 
 def get_feature_matrix(mal_apps: list[RawApkData], ben_apps: list[RawApkData]):
     mal_matrix = []
-    for mal_app in mal_apps:
+    for mal_app in ben_apps:
         feat_vector = []
 
         ### Start calls to all feature extractors
@@ -61,10 +68,13 @@ def get_feature_matrix(mal_apps: list[RawApkData], ben_apps: list[RawApkData]):
         num_of_write_perms.get_features(mal_app.manifest, feat_vector)
         num_of_access_perms.get_features(mal_app.manifest, feat_vector)
         has_top_mal_perms.get_features(mal_app.manifest, feat_vector)
-
+        num_of_implicit_intents.get_features(mal_app.implicit_intents, feat_vector)
+        num_of_urls.get_features(mal_app.urls, feat_vector)
+        num_of_emails.get_features(mal_app.emails, feat_vector)
+        
         ### Ended calls to all feature extractors
 
         mal_matrix.append(feat_vector)
 
     # Remove this
-    pprint(mal_matrix)
+    # pprint(mal_matrix)
