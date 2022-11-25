@@ -8,3 +8,6 @@ import feature_extraction.features.num_of_write_perms
 import feature_extraction.features.num_of_access_perms
 import feature_extraction.features.uses_gps
 import feature_extraction.features.has_top_mal_perms
+import feature_extraction.features.num_of_implicit_intents
+import feature_extraction.features.num_of_urls
+import feature_extraction.features.num_of_emails
