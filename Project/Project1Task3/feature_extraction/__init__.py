@@ -4,7 +4,6 @@ from .core import *
 from asyncio import gather
 from logging import getLogger
 from time import time
-from pprint import pprint
 
 from feature_extraction.features import *
 
@@ -46,6 +45,7 @@ async def extract_features(
 
 
 def get_feature_matrix(mal_apps: list[RawApkData], ben_apps: list[RawApkData]):
+    logger.warn("Extracting features for malicious APKs.")
     mal_matrix = []
     for mal_app in mal_apps:
         feat_vector = []
@@ -58,6 +58,7 @@ def get_feature_matrix(mal_apps: list[RawApkData], ben_apps: list[RawApkData]):
         num_of_read_perms.get_features(mal_app.manifest, feat_vector)
         has_coarse_location.get_features(mal_app.manifest, feat_vector)
         uses_camera.get_features(mal_app.manifest, feat_vector)
+        uses_gps.get_features(mal_app.manifest, feat_vector)
         num_of_write_perms.get_features(mal_app.manifest, feat_vector)
         num_of_access_perms.get_features(mal_app.manifest, feat_vector)
         has_top_mal_perms.get_features(mal_app.manifest, feat_vector)
@@ -66,5 +67,29 @@ def get_feature_matrix(mal_apps: list[RawApkData], ben_apps: list[RawApkData]):
 
         mal_matrix.append(feat_vector)
 
-    # Remove this
-    pprint(mal_matrix)
+    logger.warn(f"Collected {len(mal_matrix)} samples!")
+
+    logger.warn("Extracting features for benign APKs.")
+    ben_matrix = []
+    for ben_app in ben_apps:
+        feat_vector = []
+
+        ### Start calls to all feature extractors
+
+        num_of_perms.get_features(ben_app.manifest, feat_vector)
+        intent_filter.get_features(ben_app.manifest, feat_vector)
+        has_fine_location.get_features(ben_app.manifest, feat_vector)
+        num_of_read_perms.get_features(ben_app.manifest, feat_vector)
+        has_coarse_location.get_features(ben_app.manifest, feat_vector)
+        uses_camera.get_features(ben_app.manifest, feat_vector)
+        uses_gps.get_features(ben_app.manifest, feat_vector)
+        num_of_write_perms.get_features(ben_app.manifest, feat_vector)
+        num_of_access_perms.get_features(ben_app.manifest, feat_vector)
+        has_top_mal_perms.get_features(ben_app.manifest, feat_vector)
+
+        ### Ended calls to all feature extractors
+
+        ben_matrix.append(feat_vector)
+
+    logger.warn(f"Collected {len(ben_matrix)} samples!")
+    return mal_matrix, ben_matrix
