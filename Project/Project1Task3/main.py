@@ -51,6 +51,8 @@ Input the type of feature extraction:
     xs are data and the ys are label
     """
     data_tuple = preprocessor.prepare_data(mal_matrix, ben_matrix, args.featuretype)
+
+    # Run all 3 models
     svc.run_model(data_tuple)
     random_forest.run_model(data_tuple)
     knn.run_model(data_tuple)
