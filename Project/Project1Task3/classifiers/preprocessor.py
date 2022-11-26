@@ -15,12 +15,10 @@ def prepare_data(mal_matrix, ben_matrix, feature_type):
 
     if feature_type == 2:
         features = PCA(features)
-        print(f"\n\nfeatures dimension: {len(features)} X {len(features[0])}\n\n")
 
     return train_test_split(features, labels, test_size=0.2)
 
 
-# https://www.askpython.com/python/examples/principal-component-analysis
 def PCA(features):
 
     # Apply principal  component analysis
