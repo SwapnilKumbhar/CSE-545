@@ -8,4 +8,4 @@ def run_model(data_tuple):
 
     score = utils.get_f1_score(clf, data_tuple)
 
-    print(f"F1 Score: {score}")
+    print(f"SVC F1 Score: {score}")
