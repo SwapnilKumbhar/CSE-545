@@ -30,7 +30,7 @@ Input the type of feature extraction:
         """,
         required=False,
         default=1,
-        choices=[1, 2, 3]
+        choices=[1, 2, 3],
     )
 
     args = parser.parse_args()
@@ -44,7 +44,9 @@ Input the type of feature extraction:
         extract_features(args.malicious, args.benign)
     )
 
-    mal_matrix, ben_matrix = get_feature_matrix(mal_app_data, ben_app_data, args.featuretype)
+    mal_matrix, ben_matrix = get_feature_matrix(
+        mal_app_data, ben_app_data, args.featuretype
+    )
 
     """
     data_tuple is a tuple of (x_train, x_test, y_train, y_test)

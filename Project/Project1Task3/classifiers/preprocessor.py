@@ -22,14 +22,16 @@ def prepare_data(mal_matrix, ben_matrix, feature_type):
 def PCA(features):
 
     # Apply principal  component analysis
-    features_meaned = features - np.mean(features , axis = 0)
-    cov_mat = np.cov(features_meaned , rowvar = False)
-    eigen_values , eigen_vectors = np.linalg.eigh(cov_mat)
+    features_meaned = features - np.mean(features, axis=0)
+    cov_mat = np.cov(features_meaned, rowvar=False)
+    eigen_values, eigen_vectors = np.linalg.eigh(cov_mat)
     sorted_index = np.argsort(eigen_values)[::-1]
-    sorted_eigenvectors = eigen_vectors[:,sorted_index]
+    sorted_eigenvectors = eigen_vectors[:, sorted_index]
 
     # Get only the top 'PRINCIPAL_FEATURES' number of features
-    eigenvector_subset = sorted_eigenvectors[:,0:PRINCIPAL_FEATURES]
-    features_reduced = np.dot(eigenvector_subset.transpose(), features_meaned.transpose()).transpose()
-    
+    eigenvector_subset = sorted_eigenvectors[:, 0:PRINCIPAL_FEATURES]
+    features_reduced = np.dot(
+        eigenvector_subset.transpose(), features_meaned.transpose()
+    ).transpose()
+
     return features_reduced
