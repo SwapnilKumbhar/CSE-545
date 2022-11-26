@@ -54,7 +54,7 @@ async def extract_features(
 def get_feature_matrix(mal_apps: list[RawApkData], ben_apps: list[RawApkData]):
     logger.warn("Extracting features for malicious APKs.")
     mal_matrix = []
-    for mal_app in ben_apps:
+    for mal_app in mal_apps:
         feat_vector = []
 
         ### Start calls to all feature extractors

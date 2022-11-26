@@ -7,6 +7,7 @@ from lxml.etree import _Element
 from logging import getLogger
 
 import subprocess
+import re
 
 logger = getLogger("FE.CORE")
 
@@ -119,7 +120,8 @@ async def get_raw_elements(file_path: str):
 
             return RawApkData(path.basename(file_path), manifest_xml, implicit_intents, urls, emails)
 
-    except:
+    except Exception as e:
         # Maybe a bad zip file?
+        print(e)
         logger.error(f"Failed to extract APK for: {file_path}")
         return None
