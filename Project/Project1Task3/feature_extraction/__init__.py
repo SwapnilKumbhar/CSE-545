@@ -1,10 +1,12 @@
 from glob import glob
 from os import path, mkdir
-from shutil import rmtree
+
 from .core import *
+from .core import utils
 from asyncio import gather
 from logging import getLogger
 from time import time
+import json
 
 from feature_extraction.features import *
 
@@ -12,8 +14,16 @@ logger = getLogger("FE")
 
 
 async def extract_features(
-    mal_apps_path: str, ben_apps_path: str
+    mal_apps_path: str, ben_apps_path: str, regen_data: bool
 ) -> tuple[list[RawApkData], list[RawApkData]]:
+    if not regen_data:
+        # Check if we can load from an existing json file
+        if not path.exists("mal_data.pkl") or not path.exists("ben_data.pkl"):
+            logger.error("Could not find `mal_data.pkl` or `ben_data.pkl`")
+            return None, None
+        else:
+            return utils.deserialize_feats("mal_data.pkl", "ben_data.pkl")
+
     # Turn paths to absolute
     mal_apps_path = path.abspath(mal_apps_path)
     ben_apps_path = path.abspath(ben_apps_path)
@@ -47,6 +57,8 @@ async def extract_features(
     end_time = time()
 
     logger.info(f"Gathered! Took {end_time - start_time} seconds")
+
+    utils.serialize_feats(mal_apps_data, ben_apps_data)
 
     return mal_apps_data, ben_apps_data
 

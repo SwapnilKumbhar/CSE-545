@@ -4,10 +4,16 @@ from classifiers import preprocessor, svc, random_forest, knn
 import argparse
 import logging
 import asyncio
+from shutil import which
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="""Use classification models like SVC, KNN and Random Forest to \
+identify malicious applications from the benign ones. \
+Depends on `jadx`."""
+    )
+
     parser.add_argument(
         "-b", "--benign", type=str, help="Path to benign apps directory", required=True
     )
@@ -32,6 +38,13 @@ Input the type of feature extraction:
         default=1,
         choices=[1, 2, 3],
     )
+    parser.add_argument(
+        "-r",
+        "--regen-data",
+        help="Regenerate the raw data JSON file by extracting features again from APKs",
+        default=False,
+        action="store_true",
+    )
 
     args = parser.parse_args()
 
@@ -40,9 +53,26 @@ Input the type of feature extraction:
         format="[%(levelname)s %(name)s]: %(message)s", level=logging.INFO
     )
 
+    logger = logging.getLogger("main")
+
+    # Check if we have `jadx`
+    if not which("jadx"):
+        logger.error("`jadx` not found. Please install `jadx` to run this program.")
+        logger.error("If `jadx` is installed, please ensure that it exists in PATH.")
+        exit(-1)
+
     mal_app_data, ben_app_data = asyncio.run(
-        extract_features(args.malicious, args.benign)
+        extract_features(args.malicious, args.benign, args.regen_data)
     )
+
+    if (mal_app_data, ben_app_data) == (None, None) and not args.regen_data:
+        # Failed to load regen file
+        logger.error("Failed to load cached raw data.")
+
+    if (mal_app_data, ben_app_data) == (None, None):
+        # This is irrecoverable.
+        logger.error("Failed to extract raw features. Exiting...")
+        exit(-1)
 
     mal_matrix, ben_matrix = get_feature_matrix(
         mal_app_data, ben_app_data, args.featuretype
