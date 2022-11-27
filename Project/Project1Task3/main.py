@@ -46,7 +46,16 @@ Input the type of feature extraction:
         action="store_true",
     )
 
+    parser.add_argument(
+        "--model",
+        help="Models to run. Valid values (svc, knn, randomforest). Defaults to 'randomforest'",
+        default=["randomforest"],
+        choices=["svc", "knn", "randomforest"],
+        nargs="+",
+    )
+
     args = parser.parse_args()
+    print(args)
 
     ## Set up logging
     logging.basicConfig(
@@ -85,6 +94,9 @@ Input the type of feature extraction:
     data_tuple = preprocessor.prepare_data(mal_matrix, ben_matrix, args.featuretype)
 
     # Run all 3 models
-    svc.run_model(data_tuple)
-    random_forest.run_model(data_tuple)
-    knn.run_model(data_tuple)
+    if "svc" in args.model:
+        svc.run_model(data_tuple)
+    if "knn" in args.model:
+        random_forest.run_model(data_tuple)
+    if "randomforest" in args.model:
+        knn.run_model(data_tuple)
