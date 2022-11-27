@@ -3,3 +3,6 @@ __pycache__
 benign/*
 malware/*
 extracted_code/*
+ziptest.py
+*.pkl
+extracted.tar.xz
