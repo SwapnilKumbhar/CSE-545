@@ -44,8 +44,8 @@ def deserialize_feats(mal_file_path, ben_file_path):
         data = pkl.load(f)
         for k, v in data["base"].items():
             xml = (
-                etree.fromstring(zlib.decompress(data["xmls"]["manifest"]))
-                if data["xmls"]["manifest"] is not None
+                etree.fromstring(zlib.decompress(data["xmls"][k]))
+                if data["xmls"][k] is not None
                 else None
             )
             mal_list.append(
@@ -62,8 +62,8 @@ def deserialize_feats(mal_file_path, ben_file_path):
         data = pkl.load(f)
         for k, v in data["base"].items():
             xml = (
-                etree.fromstring(zlib.decompress(data["xmls"]["manifest"]))
-                if data["xmls"]["manifest"] is not None
+                etree.fromstring(zlib.decompress(data["xmls"][k]))
+                if data["xmls"][k] is not None
                 else None
             )
             ben_list.append(
