@@ -60,4 +60,4 @@ class EventData:
     start_time: NsTime
     end_time: NsTime
     duration: int
-    args: dict
+    args: LogArgs

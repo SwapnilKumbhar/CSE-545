@@ -1,7 +1,8 @@
 from sysdig.parser_types import *
 from io import TextIOWrapper
-from sysdig.arg_parsers import read, write
 import re
+
+from sysdig.runner import BACKWARD_ACTIONS, FORWARD_ACTIONS
 
 
 FD_TYPE_RE = r"<[\d\w]+>"
@@ -16,12 +17,16 @@ def parse_file_fd(args: str):
 
 
 def parse_ipv4_fd(args: str):
-    print(args)
     args = args[:-1]
     args = args[args.find(">") + 1 :]
-    src, dst = args.split("->")
-    src_ip, src_port = src.split(":")
-    dst_ip, dst_port = dst.split(":")
+    ips = args.split("->")
+    src_ip, src_port, dst_ip, dst_port = None, None, None, None
+    if len(ips) == 1:
+        src_ip, src_port = ips[0].split(":")
+    elif len(ips) == 2:
+        src_ip, src_port = ips[0].split(":")
+        dst_ip, dst_port = ips[1].split(":")
+
     return {
         "src_ip": src_ip,
         "src_port": src_port,
@@ -47,6 +52,7 @@ FD_PARSER_MAP = {
     "file": parse_file_fd,
     "ipv4_socket": parse_ipv4_fd,
     "ipv6_socket": parse_ipv6_fd,
+    "udp4_socket": parse_ipv4_fd,
 }
 
 
@@ -68,10 +74,13 @@ def parse_fd(args: str):
     log_arg = None
     for fd_char, fd_val in FD_CHAR_STR_MAP.items():
         if fd_char in fd_type:
-            log_arg = LogArgs(
-                type=fd_val, fd_num=fd_number, data=FD_PARSER_MAP[fd_val](fd_string)
-            )
-            break
+            data = FD_PARSER_MAP[fd_val](fd_string)
+            if data is not None:
+                # If we get no args, it is impossible to form triples. So we skip.
+                log_arg = LogArgs(type=fd_val, fd_num=fd_number, data=data)
+
+                # We have found what we are looking for. Now break.
+                break
 
     fd_string = fd_string[fd_type_match.span()[1] :]
 
@@ -99,6 +108,37 @@ PARSER_MAP = {
     "recvmsg": parse_fd,
     "recvfrom": parse_fd,
 }
+
+
+def make_triples(evt: EventData):
+    """
+    Creates tuples. Each direction depends on the event type.
+    """
+    # Events that start from subject and end at object
+    if evt.event_type == "execve":
+        evt.triple = Triple(
+            subject=evt.process.path,
+            action=evt.event_type,
+            object=evt.args.data["exe_path"],
+        )
+    elif evt.event_type == "sendmsg":
+        obj = evt.args.data["dst_ip"] + ":" + evt.args.data["dst_port"]
+        evt.triple = Triple(subject=evt.process.path, action=evt.event_type, object=obj)
+    elif evt.event_type == "recvmsg" or evt.event_type == "recvfrom":
+        sub = None
+        if evt.args.type == "unix_socket":
+            sub = evt.args.data
+        else:
+            sub = (
+                evt.args.data["dst_ip"] + ":" + evt.args.data["dst_port"]
+                if evt.args.data["dst_ip"] is not None
+                else evt.args.data["src_ip"] + ":" + evt.args.data["src_port"]
+            )
+        evt.triple = Triple(subject=sub, action=evt.event_type, object=evt.process.path)
+    else:
+        evt.triple = Triple(
+            subject=evt.process.path, action=evt.event_type, object=evt.args.data
+        )
 
 
 def parse_logs(log_fd: TextIOWrapper):
@@ -139,6 +179,7 @@ def parse_logs(log_fd: TextIOWrapper):
                 # Arguments are not there, so we exclude it
                 continue
 
+            make_triples(evt)
             events.append(evt)
     # We don't need the file anymore
     log_fd.close()
