@@ -10,6 +10,7 @@ FD_CHAR_STR_MAP = {
     "f": "file",
     "4t": "ipv4_socket",
     "6t": "ipv6_socket",
+    "4u": "udp4_socket",
     "u": "unix_socket",
 }
 
@@ -21,7 +22,7 @@ class LogArgs:
     data: dict
 
 
-@dataclass
+@dataclass(frozen=True)
 class NsTime:
     sec: int
     nsec: int
