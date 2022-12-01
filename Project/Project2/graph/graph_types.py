@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from sysdig.parser_types import NsTime
 
 
-@dataclass
+@dataclass(frozen=True)
 class Edge:
     from_node = None  # :Node
     end_node = None  # :Node
@@ -11,7 +11,7 @@ class Edge:
     end_time: NsTime
 
 
-@dataclass
+@dataclass(frozen=True)
 class Node:
     entity: str
     in_edges: list[Edge]
