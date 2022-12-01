@@ -115,12 +115,12 @@ def make_triples(evt: EventData):
     # Events that start from subject and end at object
     if evt.event_type == "execve":
         evt.triple = Triple(
-            subject=evt.process.path,
+            subject=evt.process.path.rstrip(),
             action=evt.event_type,
-            object=evt.args.data["exe_path"],
+            object=evt.args.data["exe_path"].rstrip(),
         )
     else:
-        sub = evt.process.path
+        sub = evt.process.path.rstrip()
         # Every other event type, we look for the type of args it has
         obj = None
         if (
@@ -140,7 +140,9 @@ def make_triples(evt: EventData):
             obj = evt.args.data
             pass
 
-        evt.triple = Triple(subject=sub, object=obj, action=evt.event_type)
+        evt.triple = Triple(
+            subject=sub.rstrip(), object=obj.rstrip(), action=evt.event_type
+        )
 
 
 def parse_logs(log_fd: TextIOWrapper):
@@ -168,6 +170,7 @@ def parse_logs(log_fd: TextIOWrapper):
             start_time = NsTime(*list(map(lambda x: int(x), lprev_vals[1].split("."))))
             end_time = NsTime(*list(map(lambda x: int(x), line_vals[1].split("."))))
             evt = EventData(
+                event_id=lprev_vals[0],
                 event_type=lprev_vals[5],
                 triple=Triple("", "", ""),
                 process=Process(lprev_vals[4], lprev_vals[3]),

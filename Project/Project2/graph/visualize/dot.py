@@ -5,6 +5,8 @@ from graphviz import Digraph
 def create_dot(nodes: list[Node], file_name: str = "output") -> str:
     dot = Digraph(format="dot")
 
+    print("Creating graph dot file...")
+
     # Add nodes and store node is to name mapping in a dict for creating edges later
     node_names_dict = {}
 
@@ -14,6 +16,8 @@ def create_dot(nodes: list[Node], file_name: str = "output") -> str:
         dot.node(node_name, node_label)
 
         node_names_dict[node] = node_name
+
+    print("Creating graph dot edges...")
 
     # Iterate through all edges of every node (only in_edges is enough)
     for node in nodes:

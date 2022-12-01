@@ -44,11 +44,11 @@ def build_graph(evts: list[EventData]):
     for evt in evts:
         if evt.triple.subject not in nodes:
             nodes[evt.triple.subject] = Node(
-                entity=evt.triple.subject, in_edges=[], out_edges=[]
+                id=evt.event_id, entity=evt.triple.subject, in_edges=[], out_edges=[]
             )
         if evt.triple.object not in nodes:
             nodes[evt.triple.object] = Node(
-                entity=evt.triple.object, in_edges=[], out_edges=[]
+                id=evt.event_id, entity=evt.triple.object, in_edges=[], out_edges=[]
             )
 
     print(f"Total entities: {len(nodes.keys())}")
