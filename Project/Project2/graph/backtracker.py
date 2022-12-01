@@ -11,6 +11,13 @@ def backtrack(poi: Edge):
     global NODES_SET
     global NODES_SET_FILTERED
 
+    to_node: Node = poi.end_node
+    to_node.in_edges = [poi]
+    to_node.out_edges = []
+
+    NODES_SET.add(to_node)
+    NODES_SET_FILTERED.add(to_node)
+
     backtrack_recurse(poi)
     nodes = list(NODES_SET)
 
