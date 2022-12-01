@@ -49,6 +49,13 @@ EVT_FILTER = [
     "recvfrom",
 ]
 
+# Events where information flows from subject to object
+FORWARD_ACTIONS = {"write", "writev", "fcntl", "execve", "sendmsg", "sendto"}
+
+# Events where information flows from object to subject
+BACKWARD_ACTIONS = {"read", "readv", "recvmsg", "recvfrom"}
+
+
 # Name of the logfile that will hold `sysdig` data
 SYSDIG_LOG_FILE_NAME = f"sysdig_{datetime.now().strftime('%Y_%m_%d_%s')}.log"
 
