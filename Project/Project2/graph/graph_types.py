@@ -20,11 +20,12 @@ class Edge:
 @dataclass
 class Node:
     entity: str
+    id: str
     in_edges: list[Edge]
     out_edges: list[Edge]
 
     def __hash__(self):
-        return hash(str(self))
+        return hash(self.entity)
 
     def __eq__(self, other):
         return self == other

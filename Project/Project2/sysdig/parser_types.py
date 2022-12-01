@@ -30,13 +30,13 @@ class NsTime:
     def __sub__(self, other) -> int:
         sec_diff = self.sec - other.sec
         nsec_diff = self.nsec - other.nsec
-        return sec_diff * 1000000000 + nsec_diff
+        return round(sec_diff * 1000000000 + nsec_diff, 2)
 
     def __hash__(self):
         return hash(str(self))
 
     def __str__(self) -> str:
-        return f"{self.sec}.{self.nsec}"
+        return f"{self.sec // 1000000000}.{self.nsec}"
 
     def __lt__(self, other):
         self_time = self.sec * 1000000000 + self.nsec
@@ -69,6 +69,7 @@ class Triple:
 
 @dataclass
 class EventData:
+    event_id: str
     event_type: str
     process: Process
     triple: Triple
