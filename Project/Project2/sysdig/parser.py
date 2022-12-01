@@ -2,8 +2,6 @@ from sysdig.parser_types import *
 from io import TextIOWrapper
 import re
 
-from sysdig.runner import BACKWARD_ACTIONS, FORWARD_ACTIONS
-
 
 FD_TYPE_RE = r"<[\d\w]+>"
 FD_STRING_RE = r"fd=\d+\((.*)\)"
@@ -121,24 +119,28 @@ def make_triples(evt: EventData):
             action=evt.event_type,
             object=evt.args.data["exe_path"],
         )
-    elif evt.event_type == "sendmsg":
-        obj = evt.args.data["dst_ip"] + ":" + evt.args.data["dst_port"]
-        evt.triple = Triple(subject=evt.process.path, action=evt.event_type, object=obj)
-    elif evt.event_type == "recvmsg" or evt.event_type == "recvfrom":
-        sub = None
-        if evt.args.type == "unix_socket":
-            sub = evt.args.data
-        else:
-            sub = (
-                evt.args.data["dst_ip"] + ":" + evt.args.data["dst_port"]
-                if evt.args.data["dst_ip"] is not None
-                else evt.args.data["src_ip"] + ":" + evt.args.data["src_port"]
-            )
-        evt.triple = Triple(subject=sub, action=evt.event_type, object=evt.process.path)
     else:
-        evt.triple = Triple(
-            subject=evt.process.path, action=evt.event_type, object=evt.args.data
-        )
+        sub = evt.process.path
+        # Every other event type, we look for the type of args it has
+        obj = None
+        if (
+            evt.args.type == "unix_socket"
+            or evt.args.type == "ipv4_socket"
+            or evt.args.type == "udp4_socket"
+        ):
+            if isinstance(evt.args.data, dict):
+                # Check if dst exists or not and make and object
+                if "dst_ip" in evt.args.data and evt.args.data["dst_ip"] is not None:
+                    obj = evt.args.data["dst_ip"] + ":" + evt.args.data["dst_port"]
+                else:
+                    obj = evt.args.data["src_ip"] + ":" + evt.args.data["src_port"]
+            else:
+                obj = evt.args.data
+        elif evt.args.type == "file":
+            obj = evt.args.data
+            pass
+
+        evt.triple = Triple(subject=sub, object=obj, action=evt.event_type)
 
 
 def parse_logs(log_fd: TextIOWrapper):
