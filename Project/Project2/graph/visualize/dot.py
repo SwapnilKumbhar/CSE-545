@@ -2,7 +2,7 @@ from graph.graph_types import Node
 from graphviz import Digraph
 
 
-def create_dot(nodes: list[Node]) -> str:
+def create_dot(nodes: list[Node], file_name: str = "output") -> str:
     dot = Digraph(format="dot")
 
     # Add nodes and store node is to name mapping in a dict for creating edges later
@@ -24,7 +24,6 @@ def create_dot(nodes: list[Node]) -> str:
             dot.edge(from_node_name, end_node_name, label=label)
 
     # Save dot file and return the file name
-    file_name = "output"
     dot.render(filename=file_name)
 
     return f"{file_name}.dot"

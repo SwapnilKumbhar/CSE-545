@@ -35,11 +35,23 @@ class NsTime:
     def __hash__(self):
         return hash(str(self))
 
-    def __eq__(self, other):
-        return self == other
-
     def __str__(self) -> str:
         return f"{self.sec}.{self.nsec}"
+
+    def __lt__(self, other):
+        self_time = self.sec * 1000000000 + self.nsec
+        other_time = other.sec * 1000000000 + other.nsec
+        return self_time < other_time
+
+    def __gt__(self, other):
+        self_time = self.sec * 1000000000 + self.nsec
+        other_time = other.sec * 1000000000 + other.nsec
+        return self_time > other_time
+
+    def __eq__(self, other):
+        self_time = self.sec * 1000000000 + self.nsec
+        other_time = other.sec * 1000000000 + other.nsec
+        return self_time == other_time
 
 
 @dataclass
