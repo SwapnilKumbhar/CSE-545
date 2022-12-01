@@ -20,6 +20,7 @@ EVT_ATTRS = [
     "%proc.exepath",
     "%evt.type",
     "%evt.args",
+    "%proc.name",
 ]
 
 # Processes to filter out
@@ -28,8 +29,13 @@ PROC_FILTER = [
     "sshd",
     "irqbalance",
     "accounts-daemon",
-    "thermal",
-    "systemd-journald",
+    "thermald",
+    "systemd-journal",
+    "systemd-udev",
+    "systemd-resolve",
+    "snapd",
+    "gmain",
+    "systemd",
 ]
 
 # Events to look for
