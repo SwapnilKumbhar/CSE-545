@@ -5,12 +5,11 @@ from sysdig.runner import FORWARD_ACTIONS
 
 def _make(
     evt: EventData,
-    subjects: dict[str, Node],
-    objects: dict[str, Node],
+    nodes: dict[str, Node],
     edges: list[Edge],
 ):
-    sub = subjects[evt.triple.subject]
-    obj = objects[evt.triple.object]
+    sub = nodes[evt.triple.subject]
+    obj = nodes[evt.triple.object]
 
     # set direction
     if evt.triple.action in FORWARD_ACTIONS:
@@ -40,19 +39,22 @@ def _make(
 def build_graph(evts: list[EventData]):
     edges: list[Edge] = []
 
-    subjects = {}
-    objects = {}
+    nodes = {}
     # Create the subjects and objects dict first
     for evt in evts:
-        subjects[evt.triple.subject] = Node(
-            entity=evt.triple.subject, in_edges=[], out_edges=[]
-        )
-        objects[evt.triple.object] = Node(
-            entity=evt.triple.object, in_edges=[], out_edges=[]
-        )
+        if evt.triple.subject not in nodes:
+            nodes[evt.triple.subject] = Node(
+                entity=evt.triple.subject, in_edges=[], out_edges=[]
+            )
+        if evt.triple.object not in nodes:
+            nodes[evt.triple.object] = Node(
+                entity=evt.triple.object, in_edges=[], out_edges=[]
+            )
+
+    print(f"Total entities: {len(nodes.keys())}")
 
     for evt in evts:
-        _make(evt, subjects, objects, edges)
+        _make(evt, nodes, edges)
         if not isinstance(evt.triple.subject, str) or not isinstance(
             evt.triple.object, str
         ):
@@ -60,4 +62,4 @@ def build_graph(evts: list[EventData]):
             print(evt)
             break
 
-    return list(subjects.values()) + list(objects.values()), edges
+    return nodes.values(), edges
