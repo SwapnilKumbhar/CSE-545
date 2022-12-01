@@ -4,8 +4,8 @@ from sysdig.parser_types import NsTime
 
 @dataclass
 class Edge:
-    from_node = None  # :Node
-    end_node = None  # :Node
+    from_node: object  # :Node
+    end_node: object  # :Node
     action: str
     start_time: NsTime
     end_time: NsTime
