@@ -2,4 +2,7 @@ venv
 rsync.sh
 sysdig_*
 __pycache__
+
 output*
+backtracked*
+filtered*
