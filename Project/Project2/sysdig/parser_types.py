@@ -38,6 +38,9 @@ class NsTime:
     def __eq__(self, other):
         return self == other
 
+    def __str__(self) -> str:
+        return f"{self.sec}.{self.nsec}"
+
 
 @dataclass
 class Process:

@@ -20,7 +20,8 @@ def create_dot(nodes: list[Node]) -> str:
         for edge in node.in_edges:
             from_node_name = node_names_dict[edge.from_node]
             end_node_name = node_names_dict[edge.end_node]
-            dot.edge(from_node_name, end_node_name)
+            label = f"<{edge.action}[{edge.start_time}, {edge.end_time}]>"
+            dot.edge(from_node_name, end_node_name, label=label)
 
     # Save dot file and return the file name
     file_name = "output"
