@@ -1,0 +1,4 @@
+venv
+rsync.sh
+sysdig_*
+__pycache__
