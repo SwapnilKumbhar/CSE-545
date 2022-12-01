@@ -1,8 +1,9 @@
 from graph.graph_types import Node
 from graphviz import Digraph
+from typing import List
 
 
-def create_dot(nodes: list[Node], file_name: str = "output") -> str:
+def create_dot(nodes: List[Node], file_name: str = "output") -> str:
     dot = Digraph(format="dot")
 
     print("Creating graph dot file...")

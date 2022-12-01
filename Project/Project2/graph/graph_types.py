@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from sysdig.parser_types import NsTime
+from typing import List
 
 
 @dataclass
@@ -21,8 +22,8 @@ class Edge:
 class Node:
     entity: str
     id: str
-    in_edges: list[Edge]
-    out_edges: list[Edge]
+    in_edges: List[Edge]
+    out_edges: List[Edge]
 
     def __hash__(self):
         return hash(self.entity)
