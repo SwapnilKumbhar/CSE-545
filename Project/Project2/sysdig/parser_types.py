@@ -22,7 +22,7 @@ class LogArgs:
     data: dict
 
 
-@dataclass(frozen=True)
+@dataclass
 class NsTime:
     sec: int
     nsec: int
@@ -31,6 +31,12 @@ class NsTime:
         sec_diff = self.sec - other.sec
         nsec_diff = self.nsec - other.nsec
         return sec_diff * 1000000000 + nsec_diff
+
+    def __hash__(self):
+        return hash(str(self))
+
+    def __eq__(self, other):
+        return self == other
 
 
 @dataclass
