@@ -21,11 +21,27 @@ def backtrack(poi: Edge):
     backtrack_recurse(poi)
     nodes = list(NODES_SET)
 
+    number_of_edges = 0
+
+    for node in nodes:
+        number_of_edges += len(node.in_edges)
+
+    print(f"\nNumber of nodes after backtracking {len(nodes)}")
+    print(f"\nNumber of edges after backtracking {number_of_edges}")
+
     dot_file = dot.create_dot(nodes, "backtracked")
     image.convert_to_svg(dot_file)
 
     filter_edges(poi)
     nodes = list(NODES_SET_FILTERED)
+
+    number_of_edges = 0
+
+    for node in nodes:
+        number_of_edges += len(node.in_edges)
+
+    print(f"\nNumber of nodes after backtracking {len(nodes)}")
+    print(f"\nNumber of edges after backtracking {number_of_edges}")
 
     dot_file = dot.create_dot(nodes, "filtered")
     image.convert_to_svg(dot_file)
