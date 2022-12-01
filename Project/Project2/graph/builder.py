@@ -1,12 +1,13 @@
 from graph.graph_types import Edge, Node
 from sysdig.parser_types import EventData
 from sysdig.runner import FORWARD_ACTIONS
+from typing import Dict, List
 
 
 def _make(
     evt: EventData,
-    nodes: dict[str, Node],
-    edges: list[Edge],
+    nodes: Dict[str, Node],
+    edges: List[Edge],
 ):
     sub = nodes[evt.triple.subject]
     obj = nodes[evt.triple.object]
@@ -36,8 +37,8 @@ def _make(
         edges.append(e)
 
 
-def build_graph(evts: list[EventData]):
-    edges: list[Edge] = []
+def build_graph(evts: List[EventData]):
+    edges: List[Edge] = []
 
     nodes = {}
     # Create the subjects and objects dict first
