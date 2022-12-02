@@ -7,7 +7,7 @@ import subprocess
 import os
 from datetime import datetime
 
-exists = lambda: which("sysdig") is not None
+sysdig_exists = lambda: which("sysdig") is not None
 
 is_root = lambda: os.geteuid() == 0
 
@@ -73,7 +73,7 @@ def run_capture():
     """
 
     # Basic checks
-    if not exists():
+    if not sysdig_exists():
         logger.error("`sysdig` does not exist. Please install `sysdig`")
         return None
 

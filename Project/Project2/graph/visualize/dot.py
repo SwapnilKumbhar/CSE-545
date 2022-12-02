@@ -1,12 +1,16 @@
 from graph.graph_types import Node
 from graphviz import Digraph
 from typing import List
+from shutil import which
+from loguru import logger
+
+dot_exists = lambda: which("dot") is not None
 
 
 def create_dot(nodes: List[Node], file_name: str = "output") -> str:
     dot = Digraph(format="dot")
 
-    print("Creating graph dot file...")
+    logger.info("Creating graph dot file...")
 
     # Add nodes and store node is to name mapping in a dict for creating edges later
     node_names_dict = {}
@@ -18,7 +22,7 @@ def create_dot(nodes: List[Node], file_name: str = "output") -> str:
 
         node_names_dict[node] = node_name
 
-    print("Creating graph dot edges...")
+    logger.info("Creating graph dot edges...")
 
     # Iterate through all edges of every node (only in_edges is enough)
     for node in nodes:
