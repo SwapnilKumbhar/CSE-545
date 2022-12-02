@@ -2,6 +2,7 @@ from graph.graph_types import Edge, Node
 from sysdig.parser_types import EventData
 from sysdig.runner import FORWARD_ACTIONS
 from typing import Dict, List
+from loguru import logger
 
 
 def _make(
@@ -52,7 +53,7 @@ def build_graph(evts: List[EventData]):
                 id=evt.event_id, entity=evt.triple.object, in_edges=[], out_edges=[]
             )
 
-    print(f"Total entities: {len(nodes.keys())}")
+    logger.info(f"Total entities: {len(nodes.keys())}")
 
     for evt in evts:
         _make(evt, nodes, edges)

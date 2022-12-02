@@ -1,7 +1,7 @@
 from graph.graph_types import Edge, Node
 from graph.visualize import dot
 from graph.visualize import image
-
+from loguru import logger
 
 NODES_SET = set()
 NODES_SET_FILTERED = set()
@@ -26,8 +26,8 @@ def backtrack(poi: Edge):
     for node in nodes:
         number_of_edges += len(node.in_edges)
 
-    print(f"\nNumber of nodes after backtracking {len(nodes)}")
-    print(f"\nNumber of edges after backtracking {number_of_edges}")
+    logger.info(f"Number of nodes before backtracking {len(nodes)}")
+    logger.info(f"Number of edges before backtracking {number_of_edges}")
 
     dot_file = dot.create_dot(nodes, "backtracked")
     image.convert_to_svg(dot_file)
@@ -40,8 +40,8 @@ def backtrack(poi: Edge):
     for node in nodes:
         number_of_edges += len(node.in_edges)
 
-    print(f"\nNumber of nodes after backtracking {len(nodes)}")
-    print(f"\nNumber of edges after backtracking {number_of_edges}")
+    logger.info(f"Number of nodes after backtracking {len(nodes)}")
+    logger.info(f"Number of edges after backtracking {number_of_edges}")
 
     dot_file = dot.create_dot(nodes, "filtered")
     image.convert_to_svg(dot_file)
