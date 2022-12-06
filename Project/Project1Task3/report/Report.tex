@@ -1,0 +1,114 @@
+% TeX root = Report.tex
+\documentclass[sigplan]{acmart}
+\settopmatter{printacmref=false}
+\setcopyright{none}
+\renewcommand
+  \footnotetextcopyrightpermission[1]{}
+
+
+\begin{document}
+
+\date{\today}
+
+\title{%
+  Android Malware Detection Using Classifiers}
+
+\author{Swapnil Kumbhar}
+\affiliation{%
+  \institution{Arizona State University}
+  \city{Tempe}
+  \state{Arizona}
+  \country{USA}
+}
+\email{skumbha1@asu.edu}
+\email{1222060307}
+
+\author{Pooja Kulkarni}
+\affiliation{%
+  \institution{Arizona State University}
+  \city{Tempe}
+  \state{Arizona}
+  \country{USA}
+}
+\email{pkulka19@asu.edu}
+\email{1222060294}
+
+\begin{abstract}
+Android is a major mobile operating system, with over 70\% of mobile device market share as of 2022. Given the ubiquity of the operating system, the number of malicious applications developed on Android is considerably high, and the number keeps on increasing. Thus, it is paramount to focus on detection of such malicious applications. The malicious applications often slip the net when detections are purely heuristic. In this paper, we took a machine learning approach by analyzing various feature extraction methods and machine learning models. After benchmarking the methods for accuracy using their F-1 scores, we conclude the best feature extraction methodology and machine learning model.
+
+\end{abstract}
+\keywords{Android Malware, Machine Learning, Binary Classifiers, Application Security.}
+\maketitle
+
+%\acmConference[CSE 545]{Task 3 Report}{December 7, 2017, ASU.}
+\acmConference[CSE 545'22]{Software Security}{December 7}{ASU}
+\section {Introduction}
+
+Android is an operating system that has evolved to be beyond just a Mobile Operating System. As of 2022, Android runs on televisions, tablet computers, wearable devices like smartwatches and in IOT devices. The reason for its growth is partly because of its application framework \cite{Gunasekera2012}.
+
+The Application Framework provides a uniform set of standards and APIs that allow creation of applications that will work on devices of various architectures. This is supported by a custom Java Virtual Machine called Dalvik (or a different newer Java Virtual Machine called ART)\cite{AOSP2022}. Given the ease of application development on the platform, user developed applications increased sharply in number. With the increase in user applications, the number of malware also increased at the same rate. 
+
+In order to increase detection, we followed a machine learning based approach. The reasoning behind the approach was the observation that a lot of malware on Android seem to have properties that can be differentiated from applications that are benign (non-malicious) in nature. Following this leads us to a scenario where we can train a classifier to tell if a given application is malicious or benign. 
+
+We further explore the best set of features that can be used for training a classifier. To do this, we dissect the Android application package (\verb|.apk|) file. From the file, we extract the \verb|AndroidManifest.xml| file and the Java source code. We extract static features from these files and input them to the classifier. We created three set of features -
+
+\begin{enumerate}
+  \item Features only from the manifest file.
+  \item Features from the \verb|AndroidManifest.xml| file and the decompiled Java source code.
+  \item Dimensionally reduced features from the manifest file and the decompiled Java source code put through a Principal Component Analysis filter.
+\end{enumerate}
+
+Finally, we explored what feature set and what model combination consistently yields the best result, and we concluded that the said model is the best to use.
+
+\section {Background}
+
+\subsection {Malware in Android}
+
+Malware is a piece of code or software that aims to harm, disrupt, or access a computer system maliciously or without authorization. The malicious code present on different categories of malware can be used to gain information about individuals such as contact details, location information, phone usage trends, etc. or to take actions on their behalf without letting them notice it, for instance clicking a picture, making a phone call, etc. Some of the most malicious or dangerous malware attacks include Remote Access Trojan (RAT), banking trojans and ransomware attacks. Such presence of malicious software on android applications is growing every day, making it increasingly difficult to develop any malware detection tools and methodologies. Even after Google removed more than a million applications from the app store that contained malicious code or were violating privacy policies, it seems that there are still a number of android applications still available on the store that pose a significant danger to their users. Due to these reasons, it is extremely difficult to develop a robust model, using which we can test whether the downloaded APK is safe for usage. In this paper, we describe the machine learning approach that we took to classify an android APK as either a malicious application or a benign application. We talk about the various models, feature extractions and techniques used to build such a malware detection tool. Furthermore, we also describe our analysis in detail and subsequent results \cite{Ali2015}.
+
+\subsubsection{Malware caused by static properties}
+
+\paragraph{Android Permissions}
+
+Most android applications require certain permissions that help with the application’s functionality. In benign applications, i.e. applications that don’t contain any malicious code, these permissions are simply used to perform actions pertinent to the application’s usage. On the other hand, malware based android applications have a number of permissions that specifically target some level of malicious functionality. Permission is the first barrier to attackers.   Even though the Java or Kotlin source code contains malware, certain API calls in the code require appropriate permissions to be called. The Android operating system's security features include permission-protected API calls. For instance, Android verifies if an application has permission to use the camera or send a message before doing so. In light of this situation, researchers are concentrating more on permissions than other static aspects in order to identify malware based on requested rights. [1]
+
+All the permissions required by the android application are declared in the APK’s AndroidManifest.xml file. Extracting permissions required by an application is an easy task. As described above, these permissions have a significant contribution towards the malignity of an application. In Android 2.2, there are 134 official permissions. They were divided by Google into four categories: normal, harmful, signature, and signature or system. Researchers have used a variety of methods to examine Android permissions. The authors of [2] evaluated programs utilizing permissions and ranked them according to potential dangers (using probabilistic generative models, quantitative security risk assessment). Many experiments used machine learning to find dangerous programs by simply extracting permissions [1]. 
+
+As these android permissions are part of the static data present in an android application, features related to android permissions are categorized as static features. Static features are the kind of features that will always be the same for every user, are hard-coded as part of the APK and don’t change behavior upon usage. Based on all the aforementioned research, we have analyzed how our model behaves when different android permissions are presented to them as static features.
+
+\section {Approach}
+
+Let's delve deeper into the approach that we employed to select the feature extraction method and classifier.
+
+\subsection {Classification Models}
+
+The first thing we considered in model classification was the number of samples we had. This helped us very quickly eliminate models that would have performed extremely poorly. Artificial Neural Network was one such model. We had only 1000 samples: 500 for malware, 500 for benign.
+
+To determine the model that worked best for us, we used \verb|scikit-learn|'s "Choosing the right estimator" flowchart \cite{scikit-learn}. Our data is labelled, less than 100k in sample size and is producing a category. This left us with the following three models to choose from.
+
+\subsubsection{Support Vector Classifier}
+
+Support Vector Classifier (SVC) works by drawing a hyperplane across two categories of points and classifies points based on the hyperplane that best fits these categories\cite{Suthaharan2016}. In our case, the categories were "malicious" and "benign".
+
+In our exploration, this model can work well if there is a good and clear division between malicious and benign application properties. To this extent, we did see some divisions, such as \verb|<uses-feature>| for specific applications only existing on malicious applications. This, however, would just fit the model for our dataset and not create a generic classifier.
+
+\subsubsection{K-Nearest Neighbor}
+
+K-Nearest Neighbor (KNN) classifies data by clustering it based on closest mean distance. The mean distance between two feature vectors is calculated using various distance measures, like Euclidean Distance, Hamming Distance etc. \cite{Kramer2013}.
+
+  KNN seemed like a good choice because malicious applications seemed to show a lot of properties that were common across malicious applications. The opposite, i.e. for benign applications was also true. Within such conditions, ideally KNN should give good results. The model, however, is prone to outliers and misclassifications.
+
+\subsubsection{Random Forest Classifier}
+
+Random Forest Classifier works by creating decision trees of randomized subsets of the given dataset. These trees are then used for classification on the data under test. Each tree's result is then aggregated, and the majority is reported as the classified value \cite{Biau2016}.
+
+Our features have the characteristic that allows us to make decisions based on the presence (or absence) of a set of factors. This is also the primary reason why heuristic approaches exist for detecting malice in applications. It is easy (and more natural) to create a decision model of the features. 
+
+\section{Results and Analysis}
+
+Here, we write the analysis.
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}

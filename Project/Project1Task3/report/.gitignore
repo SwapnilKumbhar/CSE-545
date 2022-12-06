@@ -1,0 +1,11 @@
+# Ignores for latex temp files
+*.pdf
+*.cut
+*.log
+*.fls
+*.aux
+*.fdb_latexmk
+*.out
+*.gz
+*.bbl
+*.blg
