@@ -4,6 +4,13 @@
 \setcopyright{none}
 \renewcommand
   \footnotetextcopyrightpermission[1]{}
+\newcommand\purl[1]{\protect\url{#1}}
+
+\usepackage{multirow}
+\usepackage{array}
+\newcolumntype{L}{>{\arraybackslash}m{4.4cm}}
+\newcolumntype{C}{>{\arraybackslash}m{2cm}}
+
 
 
 \begin{document}
@@ -62,6 +69,30 @@ Finally, we explored what feature set and what model combination consistently yi
 
 \section {Background}
 
+\subsection {Application Format in Android}
+
+Android Applications (APK) are Java applications that target the Android Runtime, which is usually Dalvik or the newer Android Runtime (ART). Dalvik and ART are equivalent to the Java Virtual Machine on desktop and other computers. These runtimes provide API level access to the underlying layers of the Android Operating System. Kotlin is also a common language and Google's preferred application development language for Android Applications.
+
+Every APK is equivalent to a Java JAR file. Inside the APK are the following -- 
+
+\paragraph{AndroidManifest.xml}
+The manifest file contains several crucial properties about the Android application. This includes (and not is limited to) the application's required permissions, required features, list of activities, services, intent filters, minimum SDK level etc. \cite{AOSPManifest}
+
+The important thing to take away from this file is the number of permissions, features and intent filters. We can more or less tell the nature of the application by checking these details. Such metadata will prove to be very helpful for us with our classification.
+
+\paragraph{classes.dex}
+
+This is the compiled executable byte-code that contains the application logic. The code itself targets ART or Dalvik, and thus can be decompiled to obtain source code that is nearly same as the original source.\cite{Nolan2012}
+
+The source code, decompiled or original, would prove to be extremely helpful in determining the nature of an application. Without even understanding the logic, if we look for specific API calls or intents that are being made by the application, we can tell whether the nature of the application. 
+
+\paragraph{Resources}
+
+These are the things like images, icons and strings that are used in the application. Internally, this is a folder that contains sub-folders for every screen size. Each containing scaled models that look best on that screen model. \cite{AOSPResources}
+
+One important resource here is the \verb|strings.xml| file. It contains internationalized strings that are used in the application. These strings can be checked for URLs, Emails, IP Addresses, Bitcoin Wallet signatures and these details can be used to establish malice. They can also be used for root-cause analysis during the forensics phase of an attack.
+
+
 \subsection {Malware in Android}
 
 Malware is a piece of code or software that aims to harm, disrupt, or access a computer system maliciously or without authorization. The malicious code present on different categories of malware can be used to gain information about individuals such as contact details, location information, phone usage trends, etc. or to take actions on their behalf without letting them notice it, for instance clicking a picture, making a phone call, etc. Some of the most malicious or dangerous malware attacks include Remote Access Trojan (RAT), banking trojans and ransomware attacks. Such presence of malicious software on android applications is growing every day, making it increasingly difficult to develop any malware detection tools and methodologies. Even after Google removed more than a million applications from the app store that contained malicious code or were violating privacy policies, it seems that there are still a number of android applications still available on the store that pose a significant danger to their users. Due to these reasons, it is extremely difficult to develop a robust model, using which we can test whether the downloaded APK is safe for usage. In this paper, we describe the machine learning approach that we took to classify an android APK as either a malicious application or a benign application. We talk about the various models, feature extractions and techniques used to build such a malware detection tool. Furthermore, we also describe our analysis in detail and subsequent results \cite{Ali2015}.
@@ -70,15 +101,141 @@ Malware is a piece of code or software that aims to harm, disrupt, or access a c
 
 \paragraph{Android Permissions}
 
-Most android applications require certain permissions that help with the application’s functionality. In benign applications, i.e. applications that don’t contain any malicious code, these permissions are simply used to perform actions pertinent to the application’s usage. On the other hand, malware based android applications have a number of permissions that specifically target some level of malicious functionality. Permission is the first barrier to attackers.   Even though the Java or Kotlin source code contains malware, certain API calls in the code require appropriate permissions to be called. The Android operating system's security features include permission-protected API calls. For instance, Android verifies if an application has permission to use the camera or send a message before doing so. In light of this situation, researchers are concentrating more on permissions than other static aspects in order to identify malware based on requested rights. [1]
+Most android applications require certain permissions that help with the application’s functionality. In benign applications, i.e. applications that don’t contain any malicious code, these permissions are simply used to perform actions pertinent to the application’s usage. On the other hand, malware based android applications have a number of permissions that specifically target some level of malicious functionality. Permission is the first barrier to attackers.   Even though the Java or Kotlin source code contains malware, certain API calls in the code require appropriate permissions to be called. The Android operating system's security features include permission-protected API calls. For instance, Android verifies if an application has permission to use the camera or send a message before doing so. In light of this situation, researchers are concentrating more on permissions than other static aspects in order to identify malware based on requested rights \cite{Ali2015}.
 
-All the permissions required by the android application are declared in the APK’s AndroidManifest.xml file. Extracting permissions required by an application is an easy task. As described above, these permissions have a significant contribution towards the malignity of an application. In Android 2.2, there are 134 official permissions. They were divided by Google into four categories: normal, harmful, signature, and signature or system. Researchers have used a variety of methods to examine Android permissions. The authors of [2] evaluated programs utilizing permissions and ranked them according to potential dangers (using probabilistic generative models, quantitative security risk assessment). Many experiments used machine learning to find dangerous programs by simply extracting permissions [1]. 
+All the permissions required by the android application are declared in the APK’s AndroidManifest.xml file. Extracting permissions required by an application is an easy task. As described above, these permissions have a significant contribution towards the malignity of an application. In Android 2.2, there are 134 official permissions. They were divided by Google into four categories: normal, harmful, signature, and signature or system. Researchers have used a variety of methods to examine Android permissions. Peng, et al. \cite{Peng2012} evaluated programs utilizing permissions and ranked them according to potential dangers (using probabilistic generative models, quantitative security risk assessment). Many experiments used machine learning to find dangerous programs by simply extracting permissions \cite{Ali2015}. 
 
 As these android permissions are part of the static data present in an android application, features related to android permissions are categorized as static features. Static features are the kind of features that will always be the same for every user, are hard-coded as part of the APK and don’t change behavior upon usage. Based on all the aforementioned research, we have analyzed how our model behaves when different android permissions are presented to them as static features.
+
+\paragraph {Android Hardware Components}
+
+A ‘uses-feature’ declaration in the Android Manifest file informs any external entity of the set of hardware and software features on which your application depends. It provides a necessary element that enables you to define whether your application must have the given feature and cannot function without it or whether it would like to have the feature but is still able to do so. The "uses-feature" part plays a crucial purpose in allowing an application to define the device-variable features that it utilizes because feature support might differ amongst Android devices \cite{AOSPUsesFeature}. As this element is also declared inside the manifest file, it is also considered as a static feature.
+According to the research done by the authors of “An Android Malware Detection System Based on Feature Fusion” \cite{Li2018}, 36 out of 34 hardware components contributed to the detection of malware in an android application after they applied Principal Component Analysis on a range of different types of features. This motivated us to try including 2 hardware components as part of our feature extraction, which we considered are two more widely used hardware components, i.e. the GPS and Camera components.
+
+\paragraph {Intent Filters}
+
+In the Android Manifest file, the ‘intent-filter’ element is used to declare the capabilities of its parent component. This includes the action that can be performed by an activity or service and the types of broadcasts a receiver can handle. This enables the component to receive intents of the given type and filters out the ones that are not useful for the component. \cite{AOSPIntentFilterElement}
+
+According to the authors of \cite{Feizollah2017} 7.5 times more malicious apps than clean ones declare intent-filter in their dataset. Every healthy application typically declares 1.18 intent-filters, but every malicious application typically declares 1.61 intent-filters. From this, we can conclude that programs containing some form of malware frequently use intent-filters to intercept intentions before successfully hijacking the operations.
+
+Due to this previously performed and verified research, we decided to use intent-filters as part of our feature extraction process. We used the count of intent-filters as one of our features. This is because, according to the above analysis and results, if the number of intent filters is higher, then it is very much possible that the APK is malicious.
+
+\subsection{Malware in Java/Kotlin code}
+
+Apart from static features that help us identify which applications are malicious, there could also be some indications about the malignant nature of an application in the Java or Kotlin code in an android application. There could be a piece of code that sends our confidential information via an unknown HTTP or HTTPS URL hidden from the user or sends it through an email via an unknown email address, etc. During our project, we found that the malware dataset had a lot of Java code that had some form of such potentially malicious emails and URLs embedded in it. Thus, we decided to extract the source code from the APK files and check them for such data.
+
+Another thing that could be checked in the Java code are implicitly declared intents. Implicit intents do not name a specific component, but instead declare a general action to perform, which allows a component from another app to handle it. For example, if you want to show the user a location on a map, you can use an implicit intent to request that another capable app show a specified location on a map. \cite{AOSPIntentFilters} The android developer documentation suggests using an implicit intent to start a service is a security hazard because you can't be certain what service will respond to the intent, and the user can't see which service starts. \cite{AOSPIntentFilters} Thus we also included an extractor to check how many implicit intents the APK contains and included it as one of our features.
 
 \section {Approach}
 
 Let's delve deeper into the approach that we employed to select the feature extraction method and classifier.
+
+\subsection{Feature Extraction}
+
+In order to understand what distinguishes a malicious application from a benign one, we need to fully understand what features are important, which ones to use and how to extract them. It is an important part of the analysis as the features will ultimately be used to predict regardless of whether an APK contains malware.
+In our project, we used three different types of feature sets. Each set gave us a different accuracy after testing it with different models. The three sets were as follows --
+
+\begin{enumerate}
+  \item{Static features extracted only from the manifest file}
+  \item{Static features extracted from the manifest file and decompiled Java source code}
+  \item{Dimensionally reduced features from the manifest file and the decompiled Java source code put through a Principal Component Analysis filter.}
+\end{enumerate}
+
+\subsubsection{Number of Permissions}
+A number indicating the count of permissions present in the application’s Android Manifest file. Malicious applications could potentially request more permissions than required. E.g. a simple calculator could request access to the user's camera, contacts, etc. Benign applications on the other hand only request the required permissions, which could mean that malicious applications have a higher number of permissions than benign applications.
+
+\subsubsection{Number of intent filters}
+A number indicating the count of intent filters present in the application’s Android Manifest file. As discussed in the above intent-filters section, previous research indicates that malicious applications have more intent filters than benign applications.
+
+\subsubsection{App requests \purl{ACCESS_FINE_LOCATION} permission}
+
+A one-hot label that checks whether the application requires the user’s fine (precise) location. An application containing some malware could be maliciously trying to identify a user’s precise location.
+
+
+\subsubsection{App requests \purl{ACCESS_COARSE_LOCATION} permission}
+
+A one-hot label that checks whether the application requires the user’s approximate location. An application containing some malware could be maliciously trying to identify a user’s accurate location instead of precise location in order to avoid the use of a GPS component.
+
+\subsubsection{Number of ‘READ’ permissions}
+
+A number indicating the count of read permissions the application is requesting. If the application is trying to read a number of resources, such as photos, contacts, messages, etc. then it could be because of some malicious intent.
+
+\subsubsection{Number of ‘WRITE’ permissions}
+
+A number indicating the count of write permissions the application is requesting. If the application is trying to write to a number of resources then it could be because of some malicious intent.
+
+\subsubsection{Number of ‘ACCESS’ permissions}
+
+A number indicating the count of access permissions the application is requesting. If the application is trying to request access to a number of resources then it could be because of some malicious intent.
+
+\subsubsection{App requires the camera hardware component}
+
+A one-hot label that checks whether the application requires the user’s camera component. An application containing some malware could be clicking pictures using the user’s camera without the user noticing this activity.
+
+\subsubsection{App requires the GPS hardware component}
+
+a one-hot label that checks whether the application is requesting the user’s location via the GPS component. A malware induced application could be maliciously trying to identify a user’s location.
+
+\subsubsection{Number of permissions from the set of top 10 permissions requested by malicious APKs}
+
+The number of permissions out of the top 10 permissions used by the malicious applications present in the malware dataset.
+
+\subsubsection{Number of implicit intents}
+
+The number of implicit intents present in the decompiled Java code. As explained in the ‘Malware in Java/Kotlin code’ section above, it could be possible that the number of implicit intents could be higher in malicious applications than benign applications.
+
+\subsubsection{Number of HTTP/S URLs}
+
+The number of HTTP or HTTPS URLs present in the decompiled Java code. As explained in the ‘Malware in Java/Kotlin code’ section above, it could be possible that the number of such URLs could be higher in malicious applications than benign applications.
+
+\subsubsection{Number of email addresses}
+
+The number of email addresses present in the decompiled Java code. As explained in the ‘Malware in Java/Kotlin code’ section above, it could be possible that the number of such email addresses could be higher in malicious applications than benign applications.
+
+
+\subsubsection{Summary}
+
+These static features are extracted either from the Android Manifest file or the decompiled Java code as follows --
+
+\begin{table}[H]
+
+\begin{tabular}{c|L}
+  Source & Feature \\
+  \hline
+  \multirow{10}{*}{Manifest} & Number of Permissions \\
+                             & Number of intent filters \\
+                             & App requests \purl{ACCESS_FINE_LOCATION} permission \\
+                             & App requests \purl{ACCESS_COARSE_LOCATION} permission \\
+                             & Number of 'READ' permissions \\
+                             & Number of 'WRITE' permissions \\
+                             & Number of 'ACCESS' permissions \\
+                             & App requires the camera hardware component \\
+                             & App requires the GPS hardware component \\
+                             & Number of permissions from the set of top 10 permissions requested by malicious APKs \\ 
+  \hline
+  \multirow{3}{*}{Decompiled Java Code} & Number of Implicit Intents \\
+                                        & Number of HTTP/S URLs \\
+                                        & Number of email Addresses
+
+\end{tabular}
+
+\caption{Feature extraction to source mapping}
+
+\end{table}
+
+We were able to generate three feature sets -- 
+
+\paragraph{Static features extracted only from the manifest files} 
+
+The first feature set included static features extracted only from the manifest file. This included features such as android permissions, android hardware components and intent-filters, i.e. all the features only under the ‘Manifest file’ source in the above table. Thus, this set of features had a total of 10 features.
+
+\paragraph{Static features extracted only from the manifest files and the decompiled Java code}
+
+The second feature set included all static features, i.e. features extracted from both the manifest file and the decompiled Java source code, i.e. all the features present in the above table. Thus, this set of features had a total of 13 features
+
+\paragraph{Dimensionality reduction applied to all features}
+
+As part of this feature set, we applied Principal Component Analysis on the second feature set to reduce dimensionality. After some analysis based on the F1 score, we decided that the ideal number of features after dimensionality reduction for our feature set would be 8.
 
 \subsection {Classification Models}
 
@@ -106,9 +263,53 @@ Our features have the characteristic that allows us to make decisions based on t
 
 \section{Results and Analysis}
 
-Here, we write the analysis.
+In order to understand the results of our classification, let's first define a few metrics. We will define the \textbf{False Negative} (FN), \textbf{False Positive} (FP), \textbf{True Negative} (TN) and \textbf{True Positive} (TP).
 
-\bibliographystyle{ACM-Reference-Format}
+% \newcolumntype{C}{>{\arraybackslash}m{2cm}}
+\begin{table}[H]
+
+  \begin{tabular}{|>{\arraybackslash}m{1.3cm}|>{\arraybackslash}m{1.3cm}|>{\arraybackslash}m{2.2cm}|>{\arraybackslash}m{2.2cm}|}\hline
+     & \multicolumn{3}{c|}{Actual} \\
+     \hline
+    \multirow{3}{*}{Predicted} & & Positive & Negative \\ \hline
+                               & Positive & Malicious classified as malicious (TP) & Benign classified as malicious (FP) \\ \hline
+                               & Negative & Malicious classified as benign (FN) & Benign classified as benign (TN)\\ \hline
+
+  \end{tabular}
+
+\caption{Definition of components for F-1 Score}
+
+\end{table}
+
+Based on the tests that we ran on the given data, here is a table that shows the F-1 score of each model with each feature set -- 
+
+\begin{table}[H]
+  \begin{tabular}{|>{\arraybackslash}m{1.3cm}|>{\arraybackslash}m{1.2cm}|>{\arraybackslash}m{1.2cm}|>{\arraybackslash}m{1.2cm}|>{\arraybackslash}m{1.2cm}|} \hline
+    & \multicolumn{4}{c|}{Model} \\ \hline
+    \multirow{4}{*}{Features} & & SVC & Random Forest & KNN \\ \hline
+                              & Set 1 & 86.06\% & 93.78\% & 88.99\% \\ \cline{2-5}
+                              & Set 2 & 87.73\% & 91.24\% & 87.80\% \\ \cline{2-5}
+                              & Set 3 & 89.24\% & \textbf{96.07\%} & 91.78\% \\ \hline
+                              
+
+  \end{tabular}
+
+  \caption{Performance of every model against every feature set. The highlighted is the best performing combination.}
+
+\end{table}
+
+We can see here that Random Forest Classifier in combination with dimensionality reduced feature set yields the best results. This makes sense as decision trees would work very well in order to classify malicious and benign applications. Combine this with PCA reduced features, we will generate trees that have a very low level of noise. 
+
+Random Forest Classifier, in addition to this, will create randomized set trees and aggregate their results, further reducing inaccuracy. This is the primary reason why Random Forest combined with PCA reduced feature set works the best.
+
+\section{Conclusion}
+
+In a series of experiments, we used classifiers to determine whether applications are benign or malicious. We opted to use various feature extraction methods and various models to create such a classifier. Upon experimentation and benchmarking based on F1 Scores of every combination, we were able to conclude that for our extracted set of features, Random Forest Classifier with static features dimensionally reduced using PCA filter works most optimally. The PCA reduction is run on static features extracted from the manifest file as well as features extracted from the decompiled source code. The accuracy of said combination is 96.07\%, which is very high.  
+
+\section{Related Works}
+
+Yang and Xiao devised an SVM based approach called AppContext\cite{Yang2015} that yielded 87.7\% precision and 95\% recall. The features extracted were focussed on context and security triggers. A lot of our ideas for feature extractions come from here.
+
+\bibliographystyle{plainnat}
 \bibliography{references}
-
 \end{document}

@@ -26,9 +26,9 @@ doi="10.1007/978-1-4302-4063-1_1",
 url="https://doi.org/10.1007/978-1-4302-4063-1_1"
 }
 
-@online {AOSP2022,
+@misc {AOSP2022,
   title="Android Runtime and Dalvik",
-  author="Android Documentation",
+  author="Google Inc.",
   organization="Google, Inc.",
   year="2022",
   url="https://source.android.com/docs/core/runtime"
@@ -90,5 +90,120 @@ abstract={The random forest algorithm, proposed by L. Breiman in 2001, has been 
 issn={1863-8260},
 doi={10.1007/s11749-016-0481-7},
 url={https://doi.org/10.1007/s11749-016-0481-7}
+}
+
+@inproceedings{Peng2012,
+author = {Peng, Hao and Gates, Chris and Sarma, Bhaskar and Li, Ninghui and Qi, Yuan and Potharaju, Rahul and Nita-Rotaru, Cristina and Molloy, Ian},
+title = {Using Probabilistic Generative Models for Ranking Risks of Android Apps},
+year = {2012},
+isbn = {9781450316514},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2382196.2382224},
+doi = {10.1145/2382196.2382224},
+abstract = {One of Android's main defense mechanisms against malicious apps is a risk communication mechanism which, before a user installs an app, warns the user about the permissions the app requires, trusting that the user will make the right decision. This approach has been shown to be ineffective as it presents the risk information of each app in a "tand-alone" ashion and in a way that requires too much technical knowledge and time to distill useful information.We introduce the notion of risk scoring and risk ranking for Android apps, to improve risk communication for Android apps, and identify three desiderata for an effective risk scoring scheme. We propose to use probabilistic generative models for risk scoring schemes, and identify several such models, ranging from the simple Naive Bayes, to advanced hierarchical mixture models. Experimental results conducted using real-world datasets show that probabilistic general models significantly outperform existing approaches, and that Naive Bayes models give a promising risk scoring approach.},
+booktitle = {Proceedings of the 2012 ACM Conference on Computer and Communications Security},
+pages = {241–252},
+numpages = {12},
+keywords = {data mining, mobile, malware, risk},
+location = {Raleigh, North Carolina, USA},
+series = {CCS '12}
+}
+
+
+@misc {AOSPUsesFeature,
+  title="<uses-feature> | Android Developers",
+  author="Google Inc.",
+  organization="Google, Inc.",
+  year="2022",
+  url="https://developer.android.com/guide/topics/manifest/uses-feature-element"
+}
+
+@article{Li2018,
+author = {Li, Jian and Wang, Zheng and Wang, Tao and Tang, Jinghao and Yang, Yuguang and Zhou, Yihua},
+title = {An Android Malware Detection System Based on Feature Fusion},
+journal = {Chinese Journal of Electronics},
+volume = {27},
+number = {6},
+pages = {1206-1213},
+keywords = {Android security, Malware detection, Feature fusion, Machine learning, Information security, Android (operating system), invasive software, pattern classification, detection method, malware detection efficiency, Android platform, Android malware detection system, feature fusion, Android malicious application, static features, dynamic features, subset selection, principle component analysis, fusion features, 43 applications, 822 benign applications, 8 applications, 454 malicious applications, 99.4% detection accuracy},
+doi = {https://doi.org/10.1049/cje.2018.09.008},
+url = {https://ietresearch.onlinelibrary.wiley.com/doi/abs/10.1049/cje.2018.09.008},
+eprint = {https://ietresearch.onlinelibrary.wiley.com/doi/pdf/10.1049/cje.2018.09.008},
+abstract = {In order to improve the detection efficiency of Android malicious application, an Android malware detection system based on feature fusion is proposed on three levels. Feature fusion especially emphasizes on ten categories, which combines static and dynamic features and includes 377 features for classification. In order to improve the accuracy of malware detection, attribute subset selection and principle component analysis are used to reduce the dimensionality of fusion features. Random forest is used for classification. In the experiment, the dataset includes 43,822 benign applications and 8,454 malicious applications. The method can achieve 99.4\% detection accuracy and 0.6\% false positive rate. The experimental results show that the detection method can improve the malware detection efficiency in Android platform.},
+year = {2018}
+}
+
+@misc {AOSPManifest,
+  title="App Manifest Overview | Android Developers",
+  author="Google Inc.",
+  organization="Google, Inc.",
+  year="2022",
+  url="https://developer.android.com/guide/topics/manifest/"
+}
+
+@misc {AOSPResources,
+  title="App Resources | Android Developers",
+  author="Google Inc.",
+  organization="Google, Inc.",
+  year="2022",
+  url="https://developer.android.com/guide/topics/resources/providing-resources"
+}
+
+@inproceedings{Yang2015,
+author = {Yang, Wei and Xiao, Xusheng and Andow, Benjamin and Li, Sihan and Xie, Tao and Enck, William},
+title = {AppContext: Differentiating Malicious and Benign Mobile App Behaviors Using Context},
+year = {2015},
+isbn = {9781479919345},
+publisher = {IEEE Press},
+abstract = {Mobile malware attempts to evade detection during app analysis by mimicking security-sensitive behaviors of benign apps that provide similar functionality (e.g., sending SMS messages), and suppressing their payload to reduce the chance of being observed (e.g., executing only its payload at night). Since current approaches focus their analyses on the types of security-sensitive resources being accessed (e.g., network), these evasive techniques in malware make differentiating between malicious and benign app behaviors a difficult task during app analysis. We propose that the malicious and benign behaviors within apps can be differentiated based on the contexts that trigger security-sensitive behaviors, i.e., the events and conditions that cause the security-sensitive behaviors to occur. In this work, we introduce AppContext, an approach of static program analysis that extracts the contexts of security-sensitive behaviors to assist app analysis in differentiating between malicious and benign behaviors. We implement a prototype of AppContext and evaluate AppContext on 202 malicious apps from various malware datasets, and 633 benign apps from the Google Play Store. AppContext correctly identifies 192 malicious apps with 87.7\% precision and 95\% recall. Our evaluation results suggest that the maliciousness of a security-sensitive behavior is more closely related to the intention of the behavior (reflected via contexts) than the type of the security-sensitive resources that the behavior accesses.},
+booktitle = {Proceedings of the 37th International Conference on Software Engineering - Volume 1},
+pages = {303–313},
+numpages = {11},
+location = {Florence, Italy},
+series = {ICSE '15}
+}
+
+@Inbook{Nolan2012,
+author="Nolan, Godfrey",
+title="Inside the DEX File",
+bookTitle="Decompiling Android",
+year="2012",
+publisher="Apress",
+address="Berkeley, CA",
+pages="57--92",
+abstract="It might seem odd that we would need another virtual machine for Android phones and that the Java virtual machine (JVM) wouldn't be good enough. But for optimization and performance, the Dalvik virtual machine (DVM) is used on all Android phones. It was named after a place in the Icelandic homeland of one the original developers and is considerably different in design from the JVM. Instead of a push-pop stack machine, the DVM uses registers. The corresponding DVM bytecode or DEX files are also a completely different design than Java class files.",
+isbn="978-1-4302-4249-9",
+doi="10.1007/978-1-4302-4249-9_3",
+url="https://doi.org/10.1007/978-1-4302-4249-9_3"
+}
+
+
+@misc {AOSPIntentFilterElement,
+  title="<intent-filter> | Android Developers",
+  author="Google Inc.",
+  organization="Google, Inc.",
+  year="2022",
+  url="https://developer.android.com/guide/topics/manifest/intent-filter-element"
+}
+
+@misc {AOSPIntentFilters,
+  title="Intents and Intent Filters | Android Developers",
+  author="Google Inc.",
+  organization="Google, Inc.",
+  year="2022",
+  url="https://developer.android.com/guide/components/intents-filters"
+}
+
+
+@article{Feizollah2017,
+author = {Feizollah, Ali and Anuar, Nor and Salleh, Rosli and Suarez-Tangil, Guillermo and Furnell, Steven},
+year = {2017},
+month = {03},
+pages = {121-134},
+title = {AndroDialysis: Analysis of Android Intent Effectiveness in Malware Detection},
+volume = {65},
+journal = {Computers and Security},
+doi = {10.1016/j.cose.2016.11.007}
 }
 
