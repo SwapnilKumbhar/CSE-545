@@ -97,6 +97,6 @@ Input the type of feature extraction:
     if "svc" in args.model:
         svc.run_model(data_tuple)
     if "knn" in args.model:
-        random_forest.run_model(data_tuple)
-    if "randomforest" in args.model:
         knn.run_model(data_tuple)
+    if "randomforest" in args.model:
+        random_forest.run_model(data_tuple)
